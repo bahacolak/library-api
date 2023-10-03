@@ -34,32 +34,18 @@ public class BookController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getBookById(@PathVariable Long id) {
         BookDto book = bookService.getBookById(id);
-        if (book != null) {
-            return new ResponseEntity<>(book, HttpStatus.OK);
-        } else {
-            throw new BookNotFoundException("Book not found with id: " + id);
-        }
+        return new ResponseEntity<>(book, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<BookDto> updateBook(@Valid @PathVariable Long id, @Valid @RequestBody BookDto bookDto) {
         BookDto updatedBook = bookService.updateBook(id, bookDto);
-        if (updatedBook != null) {
-            return new ResponseEntity<>(updatedBook, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(updatedBook, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteBookById(@PathVariable Long id) {
-        boolean deleted = bookService.deleteBook(id);
-        if (deleted) {
-            return ResponseEntity.ok().build();
-        } else {
-            throw new BookNotFoundException("Book not found with id: " + id);
-        }
+    public void deleteBookById(@PathVariable Long id) {
+        bookService.deleteBook(id);
     }
-
 
 }

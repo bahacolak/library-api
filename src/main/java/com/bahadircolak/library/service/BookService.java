@@ -2,7 +2,10 @@ package com.bahadircolak.library.service;
 
 import com.bahadircolak.library.model.Book;
 import com.bahadircolak.library.repository.BookRepository;
+import com.bahadircolak.library.web.advice.BookNotFoundException;
 import com.bahadircolak.library.web.dto.BookDto;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -63,7 +66,7 @@ public class BookService {
             bookDto.setPublicationYear(book.getPublicationYear());
             return bookDto;
         } else {
-            return null;
+            throw new BookNotFoundException("Book not found with id: " + id);
         }
     }
 
@@ -90,7 +93,7 @@ public class BookService {
 
             return updatedBookDto;
         } else {
-            return null;
+            throw new BookNotFoundException("Book not found with id: " + id);
         }
     }
 
@@ -100,7 +103,7 @@ public class BookService {
             bookRepository.deleteById(id);
             return true;
         } else {
-            return false;
+            throw new BookNotFoundException("Book not found with id: " + id);
         }
     }
 
