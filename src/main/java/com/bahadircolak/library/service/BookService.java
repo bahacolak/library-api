@@ -4,8 +4,6 @@ import com.bahadircolak.library.model.Book;
 import com.bahadircolak.library.repository.BookRepository;
 import com.bahadircolak.library.web.advice.BookNotFoundException;
 import com.bahadircolak.library.web.dto.BookDto;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -56,18 +54,9 @@ public class BookService {
     }
 
     public BookDto getBookById(Long id) {
-        Optional<Book> optionalBook = bookRepository.findById(id);
-        if (optionalBook.isPresent()) {
-            Book book = optionalBook.get();
-            BookDto bookDto = new BookDto();
-            bookDto.setId(book.getId());
-            bookDto.setTitle(book.getTitle());
-            bookDto.setAuthor(book.getAuthor());
-            bookDto.setPublicationYear(book.getPublicationYear());
-            return bookDto;
-        } else {
-            throw new BookNotFoundException("Book not found with id: " + id);
-        }
+        return bookRepository.findById(id)
+                .map(book -> new BookDto(book.getId(), book.getTitle(), book.getAuthor(), book.getPublicationYear()))
+                .orElseThrow(() -> new BookNotFoundException("Book not found with id: " + id));
     }
 
 

@@ -1,7 +1,6 @@
 package com.bahadircolak.library.web;
 
 import com.bahadircolak.library.service.BookService;
-import com.bahadircolak.library.web.advice.BookNotFoundException;
 import com.bahadircolak.library.web.dto.BookDto;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

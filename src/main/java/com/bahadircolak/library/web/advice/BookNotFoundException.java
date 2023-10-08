@@ -5,4 +5,3 @@ public class BookNotFoundException extends RuntimeException {
         super(message);
     }
 }
-
