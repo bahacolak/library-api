@@ -3,8 +3,8 @@ package com.bahadircolak.library.service;
 import com.bahadircolak.library.config.PasswordEncoder;
 import com.bahadircolak.library.model.User;
 import com.bahadircolak.library.repository.UserRepository;
-import com.bahadircolak.library.web.advice.UserConflictException;
-import com.bahadircolak.library.web.advice.UserNotFoundException;
+import com.bahadircolak.library.web.advice.exception.UserConflictException;
+import com.bahadircolak.library.web.advice.exception.UserNotFoundException;
 import com.bahadircolak.library.web.dto.UserDto;
 import org.springframework.stereotype.Service;
 
@@ -72,5 +72,9 @@ public class UserService {
 
     private boolean doesUserExist(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    public UserDto updateUser(Long id, UserDto userDto) {
+
     }
 }

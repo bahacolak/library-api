@@ -37,11 +37,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).location(location).body(createdUser);
     }
 
-//    @PutMapping
-//    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto userDto){
-//        UserDto updatedUser = userService.updateUser(id, userDto);
-//        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
-//    }
+    @PutMapping
+    public ResponseEntity<UserDto> updateUser(@Valid @PathVariable Long id,@Valid @RequestBody UserDto userDto){
+        UserDto updatedUser = userService.updateUser(id, userDto);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    }
 //
 //    public void deleteUser(@PathVariable Long id){
 //        userService.deleteUser(id);

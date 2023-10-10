@@ -2,7 +2,7 @@ package com.bahadircolak.library.service;
 
 import com.bahadircolak.library.model.Book;
 import com.bahadircolak.library.repository.BookRepository;
-import com.bahadircolak.library.web.advice.BookNotFoundException;
+import com.bahadircolak.library.web.advice.exception.BookNotFoundException;
 import com.bahadircolak.library.web.dto.BookDto;
 import org.springframework.stereotype.Service;
 
