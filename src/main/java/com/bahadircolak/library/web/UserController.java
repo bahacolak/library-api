@@ -44,9 +44,10 @@ public class UserController {
         UserDto updatedUser = userService.updateUser(id, request);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
-//
-//    public void deleteUser(@PathVariable Long id){
-//        userService.deleteUser(id);
-//    }
+
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Long id){
+        userService.deleteUser(id);
+    }
 
 }

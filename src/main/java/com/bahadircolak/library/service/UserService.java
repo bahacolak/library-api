@@ -1,8 +1,10 @@
 package com.bahadircolak.library.service;
 
 import com.bahadircolak.library.config.PasswordEncoder;
+import com.bahadircolak.library.model.Book;
 import com.bahadircolak.library.model.User;
 import com.bahadircolak.library.repository.UserRepository;
+import com.bahadircolak.library.web.advice.exception.BookNotFoundException;
 import com.bahadircolak.library.web.advice.exception.UserConflictException;
 import com.bahadircolak.library.web.advice.exception.UserNotFoundException;
 import com.bahadircolak.library.web.dto.UserDto;
@@ -111,6 +113,15 @@ public class UserService {
             updatedUserDto.setEmail(existingUser.getEmail());
 
             return updatedUserDto;
+        } else {
+            throw new UserNotFoundException("User not found with id: " + id);
+        }
+    }
+
+    public void deleteUser(Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            userRepository.deleteById(id);
         } else {
             throw new UserNotFoundException("User not found with id: " + id);
         }
