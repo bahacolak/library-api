@@ -2,6 +2,8 @@ package com.bahadircolak.library.web;
 
 import com.bahadircolak.library.service.UserService;
 import com.bahadircolak.library.web.dto.UserDto;
+import com.bahadircolak.library.web.request.RegisterUserRequest;
+import com.bahadircolak.library.web.request.UpdateUserRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,15 +33,15 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto){
-        UserDto createdUser = userService.createUser(userDto);
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody RegisterUserRequest request){
+        UserDto createdUser = userService.createUser(request);
         URI location = URI.create("/api/users/" + createdUser.getId());
         return ResponseEntity.status(HttpStatus.CREATED).location(location).body(createdUser);
     }
 
-    @PutMapping
-    public ResponseEntity<UserDto> updateUser(@Valid @PathVariable Long id,@Valid @RequestBody UserDto userDto){
-        UserDto updatedUser = userService.updateUser(id, userDto);
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDto> updateUser(@Valid @PathVariable Long id, @Valid @RequestBody UpdateUserRequest request){
+        UserDto updatedUser = userService.updateUser(id, request);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 //
