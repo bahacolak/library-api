@@ -1,10 +1,8 @@
 package com.bahadircolak.library.service;
 
-import com.bahadircolak.library.config.PasswordEncoder;
-import com.bahadircolak.library.model.Book;
+import com.bahadircolak.library.config.PasswordEncoderService;
 import com.bahadircolak.library.model.User;
 import com.bahadircolak.library.repository.UserRepository;
-import com.bahadircolak.library.web.advice.exception.BookNotFoundException;
 import com.bahadircolak.library.web.advice.exception.UserConflictException;
 import com.bahadircolak.library.web.advice.exception.UserNotFoundException;
 import com.bahadircolak.library.web.dto.UserDto;
@@ -20,11 +18,11 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoderService passwordEncoderService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoderService passwordEncoderService) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.passwordEncoderService = passwordEncoderService;
     }
 
     public List<UserDto> getAllUsers() {
@@ -63,8 +61,8 @@ public class UserService {
             throw new UserConflictException("User with email: " + request.getEmail() + " already exists!");
         }
 
-        String salt = passwordEncoder.generateSalt();
-        String hashedPassword = passwordEncoder.hash(request.getPassword(), salt);
+        String salt = passwordEncoderService.generateSalt();
+        String hashedPassword = passwordEncoderService.hash(request.getPassword(), salt);
 
         User user = new User();
         user.setFirstName(request.getFirstName());

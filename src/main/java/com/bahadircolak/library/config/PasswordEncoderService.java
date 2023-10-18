@@ -1,6 +1,5 @@
 package com.bahadircolak.library.config;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKeyFactory;
@@ -12,7 +11,7 @@ import java.security.spec.KeySpec;
 import java.util.Base64;
 
 @Service
-public class PasswordEncoder {
+public class PasswordEncoderService {
 
     public String hash(String data, String salt) {
         byte[] hashedValue = null;
