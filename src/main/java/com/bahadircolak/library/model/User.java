@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
+
 @Entity
 @Getter
 @Setter
@@ -22,7 +23,6 @@ public class User implements UserDetails {
     private Long id;
     private String firstName;
     private String lastName;
-    private String username;
     private String password;
     private String email;
     private String salt;
@@ -30,13 +30,20 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
     public String getPassword() {
         return password;
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+    public String getUsername() {
+        return email;
     }
 
     @Override

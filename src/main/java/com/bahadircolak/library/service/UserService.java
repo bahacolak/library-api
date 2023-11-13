@@ -34,7 +34,6 @@ public class UserService {
             userDto.setId(user.getId());
             userDto.setFirstName(user.getFirstName());
             userDto.setLastName(user.getLastName());
-            userDto.setUsername(user.getUsername());
             userDto.setPassword(user.getPassword());
             userDto.setEmail(user.getEmail());
             userDtoList.add(userDto);
@@ -46,7 +45,6 @@ public class UserService {
         return userRepository.findById(id)
                 .map(user -> new UserDto(
                         user.getId(),
-                        user.getUsername(),
                         user.getPassword(),
                         user.getEmail(),
                         user.getFirstName(),
@@ -67,7 +65,6 @@ public class UserService {
         User user = new User();
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
-        user.setUsername(request.getUsername());
         user.setPassword(hashedPassword);
         user.setSalt(salt);
         user.setEmail(request.getEmail());
@@ -78,7 +75,6 @@ public class UserService {
         savedUserDto.setId(savedUser.getId());
         savedUserDto.setFirstName(savedUser.getFirstName());
         savedUserDto.setLastName(savedUser.getLastName());
-        savedUserDto.setUsername(savedUser.getUsername());
         savedUserDto.setPassword(savedUser.getPassword());
         savedUserDto.setEmail(savedUser.getEmail());
 
@@ -97,7 +93,6 @@ public class UserService {
 
             existingUser.setFirstName(request.getFirstName());
             existingUser.setLastName(request.getLastName());
-            existingUser.setUsername(request.getUsername());
             existingUser.setEmail(request.getEmail());
 
             existingUser = userRepository.save(existingUser);
@@ -107,7 +102,6 @@ public class UserService {
             updatedUserDto.setId(existingUser.getId());
             updatedUserDto.setFirstName(existingUser.getFirstName());
             updatedUserDto.setLastName(existingUser.getLastName());
-            updatedUserDto.setUsername(existingUser.getUsername());
             updatedUserDto.setEmail(existingUser.getEmail());
 
             return updatedUserDto;

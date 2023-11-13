@@ -1,5 +1,6 @@
 package com.bahadircolak.library.config;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKeyFactory;
@@ -13,18 +14,15 @@ import java.util.Base64;
 @Service
 public class PasswordEncoderService {
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public PasswordEncoderService() {
+        this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
+    }
+
     public String hash(String data, String salt) {
-        byte[] hashedValue = null;
-
-        KeySpec spec = new PBEKeySpec(data.toCharArray(), salt.getBytes(), 5000, 128);
-        try {
-            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-            hashedValue = factory.generateSecret(spec).getEncoded();
-        } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
-            System.out.println(e.getMessage());
-        }
-
-        return Base64.getEncoder().encodeToString(hashedValue);
+        String saltedPassword = data + salt;
+        return bCryptPasswordEncoder.encode(saltedPassword);
     }
 
     public String generateSalt() {

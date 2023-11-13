@@ -9,21 +9,20 @@ import com.bahadircolak.library.web.request.AuthenticationRequest;
 import com.bahadircolak.library.web.request.RegisterRequest;
 import com.bahadircolak.library.web.response.AuthenticationResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthenticationService {
-
     private final UserRepository userRepository;
-
-    private final PasswordEncoderService passwordEncoderService;
-
     private final JwtService jwtService;
-
-    private final AuthenticationManager authenticationManager;
+    private final PasswordEncoderService passwordEncoderService;
 
     public AuthenticationResponse register(RegisterRequest request) {
 
@@ -46,12 +45,14 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                request.getEmail(),
-                request.getPassword()
-                ));
-        var user = userRepository.findByUsername(request.getEmail())
+        var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow();
+
+        var passwordEncoder = new BCryptPasswordEncoder();
+
+        if (!passwordEncoder.matches(request.getPassword() + user.getSalt(), user.getPassword())) {
+            throw new BadCredentialsException("Invalid password");
+        }
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
